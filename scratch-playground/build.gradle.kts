@@ -31,13 +31,23 @@ fun moduleAccessArgs(packageNames: List<String>): List<String> = buildList {
 }
 
 val osName = System.getProperty("os.name")
+val macOsJvmProperties = if (osName.contains("Mac", ignoreCase = true)) {
+    listOf(
+        "-Dapple.awt.application.name=PicoBoard Scratch Playground",
+        "-Dapple.awt.application.appearance=system",
+        "-Dsun.java2d.opengl=false",
+        "-Dsun.java2d.metal=true",
+    )
+} else {
+    emptyList()
+}
 val scratchPlaygroundJvmArgs = moduleAccessArgs(
     commonDesktopJdkPackages + when {
         osName.contains("Mac", ignoreCase = true) -> macOsJdkPackages
         osName.contains("Linux", ignoreCase = true) -> linuxJdkPackages
         else -> emptyList()
     },
-)
+) + macOsJvmProperties
 
 repositories {
     mavenCentral()

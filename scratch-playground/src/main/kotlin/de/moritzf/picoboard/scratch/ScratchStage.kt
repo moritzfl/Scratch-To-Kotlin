@@ -55,6 +55,7 @@ public suspend fun scratchStage(
     }
 
     val initialWindow = fitIntoBoundingBox(width, height, maxInitialWindowDimension)
+    configureMacOsRuntimeProperties(title)
     Korge(
         windowSize = Size(initialWindow.first, initialWindow.second),
         virtualSize = Size(width, height),
@@ -65,6 +66,17 @@ public suspend fun scratchStage(
     ).start {
         ScratchStage(this, width, height).init()
     }
+}
+
+private fun configureMacOsRuntimeProperties(applicationName: String): Unit {
+    if (!System.getProperty("os.name").contains("Mac", ignoreCase = true)) {
+        return
+    }
+
+    System.setProperty("apple.awt.application.name", applicationName)
+    System.setProperty("apple.awt.application.appearance", "system")
+    System.setProperty("sun.java2d.opengl", "false")
+    System.setProperty("sun.java2d.metal", "true")
 }
 
 /**
