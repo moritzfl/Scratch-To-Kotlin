@@ -3,12 +3,15 @@ import org.gradle.api.tasks.JavaExec
 
 plugins {
     kotlin("jvm") version "2.3.0"
-    application
+    `java-library`
 }
 
 val commonDesktopJdkPackages = listOf(
     "java.desktop/java.awt",
     "java.desktop/sun.awt",
+)
+
+val linuxJdkPackages = listOf(
     "java.desktop/sun.awt.X11",
 )
 
@@ -27,11 +30,14 @@ fun moduleAccessArgs(packageNames: List<String>): List<String> = buildList {
     }
 }
 
-val scratchPlaygroundJvmArgs = if (System.getProperty("os.name").contains("Mac", ignoreCase = true)) {
-    moduleAccessArgs(commonDesktopJdkPackages + macOsJdkPackages)
-} else {
-    moduleAccessArgs(commonDesktopJdkPackages)
-}
+val osName = System.getProperty("os.name")
+val scratchPlaygroundJvmArgs = moduleAccessArgs(
+    commonDesktopJdkPackages + when {
+        osName.contains("Mac", ignoreCase = true) -> macOsJdkPackages
+        osName.contains("Linux", ignoreCase = true) -> linuxJdkPackages
+        else -> emptyList()
+    },
+)
 
 repositories {
     mavenCentral()
@@ -57,8 +63,7 @@ val scratchPlaygroundLauncher = javaToolchains.launcherFor {
 }
 
 dependencies {
-    implementation(project(":"))
-    implementation("com.soywiz.korge:korge-jvm:6.0.0")
+    api("com.soywiz.korge:korge-jvm:6.0.0")
 
     testImplementation(kotlin("test"))
 }
@@ -67,20 +72,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-application {
-    mainClass.set("de.moritzf.picoboard.scratch.examples.catchthefallingball.MainKt")
-    applicationDefaultJvmArgs = scratchPlaygroundJvmArgs
-}
-
 tasks.withType<JavaExec>().configureEach {
     javaLauncher.set(scratchPlaygroundLauncher)
-    jvmArgs(scratchPlaygroundJvmArgs)
-}
-
-tasks.register<JavaExec>("runCatchTheFallingBallSolution") {
-    group = "application"
-    description = "Runs the full Catch The Falling Ball solution."
-    classpath = sourceSets.main.get().runtimeClasspath
-    mainClass.set("de.moritzf.picoboard.scratch.examples.catchthefallingball.solution.MainKt")
     jvmArgs(scratchPlaygroundJvmArgs)
 }

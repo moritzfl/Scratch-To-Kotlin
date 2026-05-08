@@ -1,6 +1,6 @@
 # scratch-playground
 
-`scratch-playground` is an optional KorGE-based module that adds a Scratch-shaped 2D API on top of the PicoBoard library.
+`scratch-playground` is an optional KorGE-based module that provides a Scratch-shaped 2D API.
 
 This module is built and run with the repository-wide Java 21 toolchain.
 
@@ -34,7 +34,6 @@ import korlibs.image.color.Colors
 
 suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First Stage") {
     val player = rectangle(
-        name = "Player",
         width = 140.0,
         height = 24.0,
         color = Colors["#E2C044"],
@@ -44,7 +43,6 @@ suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First 
     }
 
     val ball = circle(
-        name = "Ball",
         radius = 16.0,
         color = Colors["#FF7F50"],
     ) {
@@ -74,7 +72,7 @@ suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First 
 
 The student starter is here:
 
-[Main.kt](src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/Main.kt)
+[CatchTheFallingBall.kt](../programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/CatchTheFallingBall.kt)
 
 Run it from the repository root with:
 
@@ -84,7 +82,7 @@ Run it from the repository root with:
 
 The full solution is here:
 
-[Main.kt](src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/Main.kt)
+[CatchTheFallingBallSolution.kt](../solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/CatchTheFallingBallSolution.kt)
 
 Run the full solution with:
 
@@ -95,8 +93,8 @@ Run the full solution with:
 You can also run the module tasks directly:
 
 ```bash
-./gradlew :scratch-playground:run
-./gradlew :scratch-playground:runCatchTheFallingBallSolution
+./gradlew :programming-exercise-tasks:runCatchTheFallingBall
+./gradlew :solutions:runCatchTheFallingBallSolution
 ```
 
 The solution first tries PicoBoard auto-selection. If no suitable device is found, it keeps running with keyboard controls.

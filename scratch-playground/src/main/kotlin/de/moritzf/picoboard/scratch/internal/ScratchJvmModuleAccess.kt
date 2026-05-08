@@ -10,6 +10,9 @@ private const val MODULE_ACCESS_RELAUNCHED_PROPERTY: String =
 private val commonDesktopPackages: List<String> = listOf(
     "java.desktop/java.awt",
     "java.desktop/sun.awt",
+)
+
+private val linuxDesktopPackages: List<String> = listOf(
     "java.desktop/sun.awt.X11",
 )
 
@@ -27,7 +30,7 @@ private val blockedRelaunchArgs: List<String> = listOf(
     "debugger-agent.jar",
 )
 
-internal fun relaunchScratchMainWithModuleAccessIfNeeded(
+public fun relaunchScratchMainWithModuleAccessIfNeeded(
     mainClassName: String,
     args: Array<String>,
 ): Unit {
@@ -82,10 +85,11 @@ private fun hasRequiredAwtModuleAccess(): Boolean {
 }
 
 private fun requiredModuleAccessArgs(): List<String> {
-    val packageNames = if (System.getProperty("os.name").contains("Mac", ignoreCase = true)) {
-        commonDesktopPackages + macOsDesktopPackages
-    } else {
-        commonDesktopPackages
+    val osName = System.getProperty("os.name")
+    val packageNames = commonDesktopPackages + when {
+        osName.contains("Mac", ignoreCase = true) -> macOsDesktopPackages
+        osName.contains("Linux", ignoreCase = true) -> linuxDesktopPackages
+        else -> emptyList()
     }
 
     return buildList {

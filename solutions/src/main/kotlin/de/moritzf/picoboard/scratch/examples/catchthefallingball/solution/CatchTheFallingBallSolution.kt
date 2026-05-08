@@ -41,7 +41,7 @@ private enum class GameState {
 @Suppress("LongMethod", "MagicNumber")
 fun main(args: Array<String>): Unit {
     relaunchScratchMainWithModuleAccessIfNeeded(
-        mainClassName = "de.moritzf.picoboard.scratch.examples.catchthefallingball.solution.MainKt",
+        mainClassName = "de.moritzf.picoboard.scratch.examples.catchthefallingball.solution.CatchTheFallingBallSolutionKt",
         args = args,
     )
 

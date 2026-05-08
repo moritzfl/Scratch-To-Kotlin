@@ -44,20 +44,24 @@ If PicoBoard access fails from your IDE, the usual causes are outside the librar
 For Linux development, prefer a normal JetBrains Toolbox or tarball installation
 over sandboxed package formats when you need direct access to `/dev/ttyUSB*`.
 
-## Beginner Guides
-
-- English: [BEGINNER_README.en.md](BEGINNER_README.en.md)
-- Deutsch: [BEGINNER_README.de.md](BEGINNER_README.de.md)
-
 The runnable Kotlin starter example is in:
 
-[Main.kt](examples/first-project-kotlin/src/main/kotlin/de/moritzf/picoboard/examples/firstproject/Main.kt)
+[Main.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/examples/firstproject/Main.kt)
 
 Run it with:
 
 ```bash
-./gradlew runFirstProjectKotlin
+./gradlew readSensorValues
 ```
+
+## Projects
+
+This repository is split into four Gradle projects:
+
+- `:picoboard` contains the PicoBoard library and CLI
+- `:scratch-playground` contains the KorGE-based Scratch-style API
+- `:programming-exercise-tasks` contains starter tasks for students
+- `:solutions` contains completed solutions
 
 ## Scratch Playground
 
@@ -75,7 +79,7 @@ The playground guide is in:
 
 The included catch-the-falling-ball starter is in:
 
-[Main.kt](scratch-playground/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/Main.kt)
+[CatchTheFallingBall.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/CatchTheFallingBall.kt)
 
 Run it with:
 
@@ -85,7 +89,7 @@ Run it with:
 
 The full solution is in:
 
-[Main.kt](scratch-playground/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/Main.kt)
+[CatchTheFallingBallSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/CatchTheFallingBallSolution.kt)
 
 Run it with:
 
@@ -100,32 +104,32 @@ The solution tries PicoBoard auto-selection first. If no suitable board is avail
 List available serial ports:
 
 ```bash
-./gradlew run --args="--list-ports"
+./gradlew :picoboard:run --args="--list-ports"
 ```
 
 Read continuously with library auto-selection:
 
 ```bash
-./gradlew run --args="--interval-ms 100"
+./gradlew :picoboard:run --args="--interval-ms 100"
 ```
 
 Read continuously from a specific PicoBoard:
 
 ```bash
-./gradlew run --args="--port /dev/cu.usbserial-A5061E1Q --interval-ms 100"
+./gradlew :picoboard:run --args="--port /dev/cu.usbserial-A5061E1Q --interval-ms 100"
 ```
 
 Read 10 frames and exit:
 
 ```bash
-./gradlew run --args="--port /dev/cu.usbserial-A5061E1Q --count 10"
+./gradlew :picoboard:run --args="--port /dev/cu.usbserial-A5061E1Q --count 10"
 ```
 
 Install the CLI with startup scripts:
 
 ```bash
-./gradlew installDist
-build/install/picoboard/bin/picoboard --port /dev/cu.usbserial-A5061E1Q --count 10
+./gradlew :picoboard:installDist
+picoboard/build/install/picoboard/bin/picoboard --port /dev/cu.usbserial-A5061E1Q --count 10
 ```
 
 ## Auto-Selection

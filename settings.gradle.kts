@@ -3,4 +3,7 @@ plugins {
 }
 rootProject.name = "picoboard"
 
+include("picoboard")
 include("scratch-playground")
+include("programming-exercise-tasks")
+include("solutions")
