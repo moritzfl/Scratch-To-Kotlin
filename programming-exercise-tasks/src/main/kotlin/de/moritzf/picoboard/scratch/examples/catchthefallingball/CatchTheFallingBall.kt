@@ -76,19 +76,19 @@ fun main(args: Array<String>): Unit {
                     picoService = null
                 }
 
-                // Aufgabe 1:
-                // Bewege den Fänger nach links und rechts.
+                // Task 1:
+                // Move the catcher left and right.
                 //
-                // Aufgabe 2:
-                // Lasse den Ball nach unten fallen.
+                // Task 2:
+                // Make the ball fall down.
                 //
-                // Aufgabe 3:
-                // Wenn der Ball den Fänger berührt, soll der Ball wieder oben erscheinen.
+                // Task 3:
+                // When the ball touches the catcher, make the ball appear at the top again.
                 //
-                // Aufgabe 4:
-                // Zähle mit, wie viele Bälle gefangen wurden.
+                // Task 4:
+                // Keep track of how many balls were caught.
 
-                // Hier kann die Spiellogik umgesetzt werden
+                // Implement the game logic here.
             }
         }
     }
