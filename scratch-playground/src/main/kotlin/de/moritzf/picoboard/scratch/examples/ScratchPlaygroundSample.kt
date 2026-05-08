@@ -7,31 +7,31 @@ import korlibs.image.color.Colors
 
 suspend fun main(): Unit = scratchStage(width = 1000, height = 700, title = "Scratch Playground Sample") {
     val player = rectangle(
-        width = 140.0,
-        height = 24.0,
+        width = 140,
+        height = 24,
         color = Colors["#E2C044"],
     ) {
-        goTo(0.0, -250.0)
+        goTo(0, -250)
         rotationStyle = ScratchRotationStyle.DONT_ROTATE
     }
 
     val ball = circle(
-        radius = 16.0,
+        radius = 16,
         color = Colors["#FF7F50"],
     ) {
-        goTo(0.0, 40.0)
-        pointInDirection(35.0)
+        goTo(0, 40)
+        pointInDirection(35)
     }
 
     forever {
         if (keyPressed(Key.LEFT)) {
-            player.changeXBy(-6.0)
+            player.changeXBy(-6)
         }
         if (keyPressed(Key.RIGHT)) {
-            player.changeXBy(6.0)
+            player.changeXBy(6)
         }
 
-        ball.move(6.0)
+        ball.move(6)
         ball.ifOnEdgeBounce()
 
         if (ball.touching(player)) {
