@@ -1,4 +1,4 @@
-# PicoBoard Exercises
+# From Scratch To Kotlin
 
 This repository is an educational Kotlin/JVM workspace for learners who have started programming with Scratch and are ready to take the next step toward text-based programming.
 
@@ -12,7 +12,7 @@ It combines three layers:
 
 The goal is to let students start with sensor values, then use those values to control an interactive game, without first having to understand serial communication or graphics setup.
 
-## The PicoBoard
+## Physical Input With The PicoBoard
 
 ![PicoBoard](screenshots/picoboard.png)
 
