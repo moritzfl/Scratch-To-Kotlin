@@ -1,24 +1,60 @@
-# picoboard
+# PicoBoard Exercises
 
-`picoboard` is a Kotlin/JVM library for reading a Scratch-era PicoBoard from Kotlin and Java applications over a serial connection.
+This repository is an educational Kotlin/JVM workspace for learners who have started programming with Scratch and are ready to take the next step toward text-based programming.
 
-The library:
+It keeps some familiar Scratch ideas, such as sprites, a stage, coordinates, collisions, and sensor input, but expresses them in Kotlin code. In that sense, it is intended as a migration path from block-based programming to "real" programming with source files, functions, types, build tasks, and an IDE.
 
-- uses a Gradle build with a standard wrapper
-- works on macOS, Linux, and Windows through `jSerialComm`
-- exposes both raw 10-bit sensor values and Scratch-style scaled values
-- supports one-shot reads and scheduled polling
-- uses a Java 21 toolchain for building and running the included Gradle tasks
+It combines three layers:
 
-## Status
+- small programming exercises that students can run and edit
+- a Scratch-like 2D playground for simple game projects
+- a reusable PicoBoard library that hides the serial protocol details
 
-The implementation targets the classic PicoBoard serial protocol used by Scratch 1.x:
+The goal is to let students start with sensor values, then use those values to control an interactive game, without first having to understand serial communication or graphics setup.
 
-- `38400` baud, `8N1`
-- host sends poll byte `0x01`
-- board replies with an 18-byte packet made of nine high/low channel pairs
+## The PicoBoard
 
-The parser and scaling logic follow the MIT Scratch Board technical guide, and the serial setup matches the SparkFun PicoBoard getting-started documentation.
+![PicoBoard](screenshots/picoboard.png)
+
+The PicoBoard is a small sensor board that was commonly used with Scratch 1.x to connect physical inputs to programs. It has built-in sensors and connectors for external inputs, so learners can control programs with light, sound, a slider, a button, and simple circuits.
+
+This project brings that same learning tool into a Kotlin environment. Students can keep experimenting with physical interaction, but now they write text-based Kotlin code instead of Scratch blocks.
+
+## Before You Start
+
+This repository is meant for practicing with PicoBoard inputs and small interactive programs. It does not try to teach the absolute Kotlin basics such as simple statements, variables, running code in an IDE, or general IDE setup.
+
+If you are new to Kotlin, learn those basics first with an introductory Kotlin resource and then come back to these exercises.
+
+For German-speaking learners, this video is a good starting point. It teaches the Kotlin basics needed to build a command-line rock paper scissors program, which is enough preparation for the exercises in this repository:
+
+[Kotlin Tutorial on YouTube](https://www.youtube.com/watch?v=05Wzq-pNPmk)
+
+## Learning Path
+
+1. Read simple PicoBoard sensor values.
+2. Explore built-in and external PicoBoard inputs.
+3. Use keyboard fallback controls when no board is connected.
+4. Build a small Scratch-style game with sprites, movement, collisions, and score keeping.
+5. Compare the starter exercises with complete solutions.
+6. Get creative and start building your own game
+
+## Projects
+
+The Gradle build is split into four projects:
+
+- `:programming-exercise-tasks` contains student starter exercises
+- `:solutions` contains completed versions of the exercises
+- `:scratch-playground` contains the Scratch-like 2D API used by the game exercises
+- `:picoboard` contains the PicoBoard library and CLI tooling
+
+## Requirements
+
+- Java 21
+- A classic PicoBoard or compatible Scratch sensor board for hardware exercises
+- macOS, Linux, or Windows
+
+Gradle uses Java 21 toolchains. If Java 21 is not installed locally, Gradle can provision it automatically.
 
 ## Build
 
@@ -26,27 +62,11 @@ The parser and scaling logic follow the MIT Scratch Board technical guide, and t
 ./gradlew build
 ```
 
-Gradle is configured to use Java 21 toolchains across the repository.
-If Java 21 is not installed locally, Gradle can provision it automatically.
+## Exercise 1: Read Sensor Values
 
-## IntelliJ on Linux
+Starter file:
 
-On this project, a normal IntelliJ installation on Linux works with the PicoBoard.
-Testing with IntelliJ's bundled JetBrains Runtime successfully opened `/dev/ttyUSB0`
-and read a valid PicoBoard packet.
-
-If PicoBoard access fails from your IDE, the usual causes are outside the library:
-
-- the IDE was installed from a sandboxed package format that restricts device access
-- the run configuration is using a different runtime or environment than your shell
-- the wrong serial device was selected
-
-For Linux development, prefer a normal JetBrains Toolbox or tarball installation
-over sandboxed package formats when you need direct access to `/dev/ttyUSB*`.
-
-The runnable Kotlin starter example is in:
-
-[Main.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/examples/firstproject/Main.kt)
+[ReadSensorValues.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/examples/firstproject/ReadSensorValues.kt)
 
 Run it with:
 
@@ -54,30 +74,13 @@ Run it with:
 ./gradlew readSensorValues
 ```
 
-## Projects
+This exercise introduces the easy PicoBoard API and asks students to inspect the built-in and external sensor values.
 
-This repository is split into four Gradle projects:
+## Exercise 2: Catch The Falling Ball
 
-- `:picoboard` contains the PicoBoard library and CLI
-- `:scratch-playground` contains the KorGE-based Scratch-style API
-- `:programming-exercise-tasks` contains starter tasks for students
-- `:solutions` contains completed solutions
+![Catch The Falling Ball screenshot](screenshots/catchthefallingball.png)
 
-## Scratch Playground
-
-The repository also contains an optional KorGE-based playground module with a Scratch-shaped API for simple 2D projects:
-
-- fixed logical stage size with a resizable window that scales automatically
-- simple `rectangle(...)` and `circle(...)` sprites
-- centered Scratch-like coordinates
-- sprite properties such as `x`, `y`, `direction`, `size`, `scale`, `rotationStyle`, and `visible`
-- helpers such as `move(...)`, `turnLeft(...)`, `turnRight(...)`, `touching(...)`, `touchingEdge()`, and `ifOnEdgeBounce()`
-
-The playground guide is in:
-
-[scratch-playground/README.md](scratch-playground/README.md)
-
-The included catch-the-falling-ball starter is in:
+Starter file:
 
 [CatchTheFallingBall.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/CatchTheFallingBall.kt)
 
@@ -87,7 +90,18 @@ Run it with:
 ./gradlew runCatchTheFallingBall
 ```
 
-The full solution is in:
+The task is to implement the game logic:
+
+- move the catcher left and right
+- make the ball fall down
+- reset the ball when it touches the catcher
+- count how many balls were caught
+
+The exercise uses PicoBoard controls when a board is available and keyboard controls otherwise.
+
+## Solutions
+
+Full solution:
 
 [CatchTheFallingBallSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/CatchTheFallingBallSolution.kt)
 
@@ -97,9 +111,43 @@ Run it with:
 ./gradlew runCatchTheFallingBallSolution
 ```
 
-The solution tries PicoBoard auto-selection first. If no suitable board is available, it falls back to keyboard controls.
+The solution first tries PicoBoard auto-selection. If no suitable board is available, it falls back to keyboard controls.
 
-## CLI Sample
+## Scratch Playground
+
+The `:scratch-playground` project provides a small Scratch-shaped API on top of KorGE:
+
+- fixed logical stage size with a resizable window
+- centered Scratch-like coordinates
+- simple `rectangle(...)`, `circle(...)`, `text(...)`, and image sprites
+- sprite properties such as `x`, `y`, `direction`, `size`, `scale`, `rotationStyle`, and `visible`
+- helpers such as `move(...)`, `turnLeft(...)`, `turnRight(...)`, `touching(...)`, `touchingEdge()`, and `ifOnEdgeBounce()`
+
+See the playground guide:
+
+[scratch-playground/README.md](scratch-playground/README.md)
+
+## PicoBoard Library
+
+The `:picoboard` project contains the reusable Kotlin/JVM library. It:
+
+- works through `jSerialComm`
+- exposes raw 10-bit sensor values and Scratch-style scaled values
+- supports one-shot reads and scheduled polling
+- includes an easy API for classroom exercises
+- includes lower-level APIs for direct control
+
+The implementation targets the classic Scratch 1.x PicoBoard protocol:
+
+- `38400` baud, `8N1`
+- host sends poll byte `0x01`
+- board replies with an 18-byte packet made of nine high/low channel pairs
+
+The parser and scaling logic follow the MIT Scratch Board technical guide, and the serial setup matches the SparkFun PicoBoard getting-started documentation.
+
+## CLI Tools
+
+The PicoBoard CLI is useful for setup and debugging outside the exercises.
 
 List available serial ports:
 
@@ -142,45 +190,23 @@ The library can auto-select a suitable serial device:
 
 If you want full control, keep using `PicoBoard.open(portPath)` or `PicoBoard.open(port)`.
 
-## Kotlin Example
-
-```kotlin
-import de.moritzf.picoboard.PicoBoard
-
-fun main() {
-    PicoBoard.open().use { board ->
-        val frame = board.readFrame()
-
-        println("Light: ${frame.scaled.light}")
-        println("Sound: ${frame.scaled.sound}")
-        println("Button pressed: ${frame.scaled.buttonPressed}")
-        println("Resistance A raw: ${frame.raw.resistanceA}")
-    }
-}
-```
-
-## Java Example
-
-```java
-import de.moritzf.picoboard.PicoBoard;
-import de.moritzf.picoboard.PicoBoardFrame;
-
-public final class ReadPicoBoard {
-    public static void main(String[] args) throws Exception {
-        try (var board = PicoBoard.open()) {
-            PicoBoardFrame frame = board.readFrame();
-            System.out.println("Slider: " + frame.getScaled().getSlider());
-            System.out.println("Button pressed: " + frame.getScaled().isButtonPressed());
-        }
-    }
-}
-```
-
-## Notes
+## Hardware Notes
 
 - On older systems, you may need FTDI VCP drivers installed before the PicoBoard appears as a serial device.
 - On macOS, the relevant port is typically `/dev/tty.usbserial-*` or `/dev/cu.usbserial-*`.
 - On Linux, it is commonly `/dev/ttyUSB*`.
 - On Linux, prefer the stable symlink under `/dev/serial/by-id/` when possible, for example `/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5061E1Q-if00-port0`.
-- On Linux with IntelliJ, a Toolbox-installed IDE should be able to access the PicoBoard directly. If the IDE was installed through a sandboxed package format, serial device access may be blocked by the package runtime instead of by this library.
 - On Windows, it appears as `COMx`.
+
+## IntelliJ On Linux
+
+On this project, a normal IntelliJ installation on Linux works with the PicoBoard.
+Testing with IntelliJ's bundled JetBrains Runtime successfully opened `/dev/ttyUSB0` and read a valid PicoBoard packet.
+
+If PicoBoard access fails from your IDE, the usual causes are outside the library:
+
+- the IDE was installed from a sandboxed package format that restricts device access
+- the run configuration is using a different runtime or environment than your shell
+- the wrong serial device was selected
+
+For Linux development, prefer a normal JetBrains Toolbox or tarball installation over sandboxed package formats when you need direct access to `/dev/ttyUSB*`.
