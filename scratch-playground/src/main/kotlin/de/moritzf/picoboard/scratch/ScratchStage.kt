@@ -249,7 +249,7 @@ public class ScratchStage internal constructor(
      * Generates and starts playing a tone without needing a sound file.
      *
      * Notes use German names: `C`, `D`, `E`, `F`, `G`, `A`, `H`, plus sharps and flats such as
-     * `C#` and `Cb`. `H` is B natural, while `B` is B flat. Add an octave number when needed,
+     * `C#` and `Cb`. `B` is accepted as an alias for `H`; use `Bb` for B flat. Add an octave number when needed,
      * for example `C5`; without an octave, octave 4 is used.
      *
      * @param note note name, e.g. `C`, `C#`, `Cb`, `H`, or `C5`.

@@ -131,7 +131,7 @@ playToneUntilDone("C#", 0.5)
 playToneUntilDone("H", 1.0)
 ```
 
-Tone names use the German scale: `C`, `D`, `E`, `F`, `G`, `A`, `H`. Sharps and flats such as `C#` and `Cb` are supported, and you can add an octave number such as `C5`. Without an octave, octave 4 is used.
+Tone names use the German scale: `C`, `D`, `E`, `F`, `G`, `A`, `H`. `B` is accepted as an alias for `H`, and `Bb` plays B flat. Sharps and flats such as `C#` and `Cb` are supported, and you can add an octave number such as `C5`. Without an octave, octave 4 is used.
 
 ## Catch The Falling Ball Task
 

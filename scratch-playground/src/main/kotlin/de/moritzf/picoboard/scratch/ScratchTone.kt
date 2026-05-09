@@ -61,7 +61,7 @@ internal object ScratchTone {
         "G" -> 7
         "A" -> 9
         "H" -> 11
-        "B" -> 10
+        "B" -> 11
         else -> throw IllegalArgumentException("unsupported note: $note")
     }
 
