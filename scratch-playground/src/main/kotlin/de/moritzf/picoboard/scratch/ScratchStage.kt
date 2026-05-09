@@ -12,22 +12,12 @@ import korlibs.image.text.TextAlignment
 import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.Korge
 import korlibs.korge.KorgeDisplayMode
-import korlibs.korge.view.Stage
-import korlibs.korge.view.addUpdater
-import korlibs.korge.view.circle
-import korlibs.korge.view.image
-import korlibs.korge.view.solidRect
-import korlibs.korge.view.text
+import korlibs.korge.view.*
 import korlibs.math.geom.Size
 import korlibs.render.GameWindowCreationConfig
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.math.max
 import kotlin.math.roundToInt
-import kotlin.coroutines.coroutineContext
 
 /**
  * Opens a resizable game window and runs [init] to set up the stage.
@@ -71,10 +61,10 @@ public suspend fun scratchStage(
         virtualSize = Size(width, height),
         displayMode = KorgeDisplayMode.CENTER,
         title = title,
-        backgroundColor = backgroundColor,
+        backgroundColor = surroundingStageColor(backgroundColor),
         windowCreationConfig = GameWindowCreationConfig(resizable = true),
     ).start {
-        ScratchStage(this, CoroutineScope(coroutineContext), width, height).init()
+        ScratchStage(this, CoroutineScope(coroutineContext), width, height, backgroundColor).init()
     }
 }
 
@@ -104,6 +94,7 @@ public class ScratchStage internal constructor(
     public val width: Int,
     /** Logical height of the stage in pixels. */
     public val height: Int,
+    backgroundColor: RGBA,
 ) {
     private val activeSoundChannels: MutableSet<SoundChannel> = mutableSetOf()
     private var soundSequence: Deferred<Unit> = CompletableDeferred(Unit)
@@ -112,6 +103,10 @@ public class ScratchStage internal constructor(
     internal val stageHalfHeight: Double = height / 2.0
     internal val stageCenterX: Double = width / 2.0
     internal val stageCenterY: Double = height / 2.0
+
+    init {
+        paintStageBackground(backgroundColor)
+    }
 
     /**
      * Creates a filled rectangle sprite and adds it to the stage.
@@ -345,6 +340,10 @@ public class ScratchStage internal constructor(
         activeSoundChannels.add(channel)
     }
 
+    private fun paintStageBackground(backgroundColor: RGBA): Unit {
+        korgeStage.solidRect(width.toDouble(), height.toDouble(), backgroundColor)
+    }
+
     private suspend fun playToneAndWait(
         note: String,
         durationSeconds: Double,
@@ -371,4 +370,22 @@ private fun fitIntoBoundingBox(
 ): Pair<Int, Int> {
     val scale = minOf(maxDimension / width.toDouble(), maxDimension / height.toDouble(), 1.0)
     return max(320, (width * scale).roundToInt()) to max(240, (height * scale).roundToInt())
+}
+
+private const val SURROUNDING_STAGE_ADJUSTMENT = 0.12
+private const val DARK_STAGE_LUMINANCE_THRESHOLD = 128.0
+
+private fun surroundingStageColor(backgroundColor: RGBA): RGBA {
+    val luminance = 0.299 * backgroundColor.r + 0.587 * backgroundColor.g + 0.114 * backgroundColor.b
+    val target = if (luminance < DARK_STAGE_LUMINANCE_THRESHOLD) 255 else 0
+    return RGBA(
+        mixColorComponent(backgroundColor.r, target),
+        mixColorComponent(backgroundColor.g, target),
+        mixColorComponent(backgroundColor.b, target),
+        backgroundColor.a,
+    )
+}
+
+private fun mixColorComponent(component: Int, target: Int): Int {
+    return (component + (target - component) * SURROUNDING_STAGE_ADJUSTMENT).roundToInt()
 }
