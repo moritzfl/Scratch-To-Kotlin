@@ -69,6 +69,8 @@ The Gradle build is split into four projects:
 ## Requirements
 
 - Java 21
+- Git for checking out the project
+- Gradle, usually through the included `./gradlew` wrapper
 - A classic PicoBoard or compatible Scratch sensor board for hardware exercises
 - macOS, Linux, or Windows
 
