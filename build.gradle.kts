@@ -19,3 +19,15 @@ tasks.register("runCatchTheFallingBallSolution") {
     description = "Runs the full Scratch-style Catch The Falling Ball solution."
     dependsOn(":solutions:runCatchTheFallingBallSolution")
 }
+
+tasks.register("runAlleMeineEntchen") {
+    group = "application"
+    description = "Runs the Scratch-style Alle meine Entchen music exercise."
+    dependsOn(":programming-exercise-tasks:runAlleMeineEntchen")
+}
+
+tasks.register("runAlleMeineEntchenSolution") {
+    group = "application"
+    description = "Runs the full Scratch-style Alle meine Entchen music solution."
+    dependsOn(":solutions:runAlleMeineEntchenSolution")
+}

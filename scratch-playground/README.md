@@ -17,6 +17,8 @@ It is meant as the next step after the beginner PicoBoard examples:
   `x = 0`, `y = 0` is the middle of the stage
 - simple shapes:
   `rectangle(...)` and `circle(...)`
+- sounds loaded from resources with `sound(...)`
+- generated tones with `playTone(...)` or `playToneUntilDone(...)`
 - sprite-style properties:
   `x`, `y`, `direction`, `size`, `scale`, `rotationStyle`, `visible`
 - sprite-style helpers:
@@ -50,6 +52,8 @@ suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First 
         pointInDirection(35.0)
     }
 
+    val hitSound = sound("hit.wav")
+
     forever {
         if (keyPressed(Key.LEFT)) {
             player.changeXBy(-6.0)
@@ -62,11 +66,24 @@ suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First 
         ball.ifOnEdgeBounce()
 
         if (ball.touching(player)) {
+            hitSound.play()
             println("Hit")
         }
     }
 }
 ```
+
+Sound files belong in `src/main/resources/`, for example `hit.wav` or `hit.mp3`.
+
+You can also play generated tones without providing a sound file:
+
+```kotlin
+playToneUntilDone("C", 0.5)
+playToneUntilDone("C#", 0.5)
+playToneUntilDone("H", 1.0)
+```
+
+Tone names use the German scale: `C`, `D`, `E`, `F`, `G`, `A`, `H`. Sharps and flats such as `C#` and `Cb` are supported, and you can add an octave number such as `C5`. Without an octave, octave 4 is used.
 
 ## Catch The Falling Ball Task
 

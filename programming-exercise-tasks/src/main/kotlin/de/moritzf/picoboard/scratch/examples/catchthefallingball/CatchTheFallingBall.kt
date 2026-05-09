@@ -14,10 +14,7 @@ private const val GAME_LOOP_INTERVAL_MILLIS: Long = 16L
 private const val PICOBOARD_POLL_INTERVAL_MILLIS: Long = GAME_LOOP_INTERVAL_MILLIS / 2
 
 fun main(args: Array<String>): Unit {
-    relaunchScratchMainWithModuleAccessIfNeeded(
-        mainClassName = "de.moritzf.picoboard.scratch.examples.catchthefallingball.CatchTheFallingBallKt",
-        args = args,
-    )
+    relaunchScratchMainWithModuleAccessIfNeeded(args)
 
     runBlocking {
         println("Starting Catch The Falling Ball.")

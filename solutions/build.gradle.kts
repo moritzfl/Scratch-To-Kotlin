@@ -53,6 +53,13 @@ tasks.register<JavaExec>("runCatchTheFallingBallSolution") {
     mainClass.set("de.moritzf.picoboard.scratch.examples.catchthefallingball.solution.CatchTheFallingBallSolutionKt")
 }
 
+tasks.register<JavaExec>("runAlleMeineEntchenSolution") {
+    group = "application"
+    description = "Runs the full Alle meine Entchen music solution."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("de.moritzf.picoboard.scratch.examples.allemeineentchen.solution.AlleMeineEntchenSolutionKt")
+}
+
 fun scratchPlaygroundJvmArgs(): List<String> {
     val commonDesktopJdkPackages = listOf(
         "java.desktop/java.awt",

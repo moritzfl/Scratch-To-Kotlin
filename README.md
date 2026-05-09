@@ -57,9 +57,10 @@ For German-speaking learners, this video is a good starting point. It teaches th
 1. Read simple PicoBoard sensor values.
 2. Explore built-in and external PicoBoard inputs.
 3. Use keyboard fallback controls when no board is connected.
-4. Build a small Scratch-style game with sprites, movement, collisions, and score keeping.
-5. Compare the starter exercises with complete solutions.
-6. Get creative and start building your own game
+4. Play a simple song with generated tones.
+5. Build a small Scratch-style game with sprites, movement, collisions, and score keeping.
+6. Compare the starter exercises with complete solutions.
+7. Get creative and start building your own game
 
 ## Projects
 
@@ -123,6 +124,20 @@ The task is to implement the game logic:
 
 The exercise uses PicoBoard controls when a board is available and keyboard controls otherwise.
 
+## Exercise 3: Alle meine Entchen
+
+Starter file:
+
+[AlleMeineEntchen.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/AlleMeineEntchen.kt)
+
+Run it with:
+
+```bash
+./gradlew runAlleMeineEntchen
+```
+
+The task is to complete the melody of the German children's song "Alle meine Entchen", usually translated as "All My Ducklings", with generated tones. It introduces `playToneUntilDone(...)` without requiring any sound files.
+
 ## Solutions
 
 Full solution:
@@ -137,13 +152,23 @@ Run it with:
 
 The solution first tries PicoBoard auto-selection. If no suitable board is available, it falls back to keyboard controls.
 
+Alle meine Entchen solution:
+
+[AlleMeineEntchenSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/solution/AlleMeineEntchenSolution.kt)
+
+Run it with:
+
+```bash
+./gradlew runAlleMeineEntchenSolution
+```
+
 ## Scratch Playground
 
 The `:scratch-playground` project provides a small Scratch-shaped API on top of [KorGE](https://korge.org/):
 
 - fixed logical stage size with a resizable window
 - centered Scratch-like coordinates
-- simple `rectangle(...)`, `circle(...)`, `text(...)`, and image sprites
+- simple `rectangle(...)`, `circle(...)`, `text(...)`, image sprites, and sounds
 - sprite properties such as `x`, `y`, `direction`, `size`, `scale`, `rotationStyle`, and `visible`
 - helpers such as `move(...)`, `turnLeft(...)`, `turnRight(...)`, `touching(...)`, `touchingEdge()`, and `ifOnEdgeBounce()`
 
@@ -178,7 +203,11 @@ Common Scratch blocks translate to the Kotlin playground like this:
 | Scratch variables | Kotlin variables such as `var score = 0` | Use normal Kotlin values and update displayed text manually. |
 | Scratch variable display | `val label = text(...); label.text = "Score: $score"` | Text labels replace Scratch's automatic variable monitor. |
 | Costume-like image sprite | `val player = image("player.png")` | Put PNG files in `src/main/resources/`; use transparency for custom object shapes instead of rectangular images. |
-| Sounds, broadcasts, clones | No direct helper yet | These were not needed for the internship exercises. |
+| `start sound [pop]` | `pop.play()` | Load first with `val pop = sound("pop.wav")`; sound files belong in `src/main/resources/`. |
+| `play sound [pop] until done` | `pop.playUntilDone()` | Suspends until playback finishes. |
+| `play note (60) for (0.5) beats` | `playToneUntilDone("C", 0.5)` | Generates a tone without a sound file; supports notes such as `C`, `C#`, `Cb`, `F`, `G`, `A`, `H`, and `C5`. |
+| `stop all sounds` | `stopAllSounds()` | Stops sounds started through the playground sound helpers. |
+| Broadcasts, clones | No direct helper yet | These were not needed for the internship exercises. |
 
 See the playground guide:
 

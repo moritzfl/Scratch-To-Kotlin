@@ -1,5 +1,9 @@
 package de.moritzf.picoboard.scratch
 
+import korlibs.audio.sound.SoundChannel
+import korlibs.audio.sound.await
+import korlibs.audio.sound.readSound
+import korlibs.audio.sound.toSound
 import korlibs.event.Key
 import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
@@ -94,6 +98,8 @@ public class ScratchStage internal constructor(
     /** Logical height of the stage in pixels. */
     public val height: Int,
 ) {
+    private val activeSoundChannels: MutableSet<SoundChannel> = mutableSetOf()
+
     internal val stageHalfWidth: Double = width / 2.0
     internal val stageHalfHeight: Double = height / 2.0
     internal val stageCenterX: Double = width / 2.0
@@ -216,6 +222,61 @@ public class ScratchStage internal constructor(
     }
 
     /**
+     * Loads a sound file from the resources folder.
+     *
+     * Place sound files in `src/main/resources/` and refer to them by filename, e.g.
+     * `"jump.wav"`. WAV and MP3 files are supported by KorGE on the JVM.
+     *
+     * This is a suspend function and must be called from within the [scratchStage] init block
+     * or another suspend context.
+     *
+     * @param path resource-relative path to the sound file, e.g. `"jump.wav"`.
+     * @return the loaded [ScratchSound].
+     */
+    public suspend fun sound(path: String): ScratchSound {
+        return ScratchSound(resourcesVfs[path].readSound(), ::registerSoundChannel)
+    }
+
+    /**
+     * Generates and starts playing a tone without needing a sound file.
+     *
+     * Notes use German names: `C`, `D`, `E`, `F`, `G`, `A`, `H`, plus sharps and flats such as
+     * `C#` and `Cb`. `H` is B natural, while `B` is B flat. Add an octave number when needed,
+     * for example `C5`; without an octave, octave 4 is used.
+     *
+     * @param note note name, e.g. `C`, `C#`, `Cb`, `H`, or `C5`.
+     * @param durationSeconds playback duration in seconds.
+     * @param volume playback volume from `0.0` to `1.0`.
+     * @return the started sound channel.
+     */
+    public suspend fun playTone(
+        note: String,
+        durationSeconds: Double,
+        volume: Double = 0.5,
+    ): SoundChannel {
+        require(durationSeconds > 0.0) {
+            "durationSeconds must be greater than zero"
+        }
+        require(volume in 0.0..1.0) {
+            "volume must be between 0.0 and 1.0"
+        }
+
+        val sound = ScratchTone.generate(note, durationSeconds, volume).toSound()
+        return sound.playNoCancel().also(::registerSoundChannel)
+    }
+
+    /**
+     * Generates and plays a tone, then suspends until the tone has finished.
+     */
+    public suspend fun playToneUntilDone(
+        note: String,
+        durationSeconds: Double,
+        volume: Double = 0.5,
+    ): Unit {
+        playTone(note, durationSeconds, volume).await()
+    }
+
+    /**
      * Registers a block that is called once per frame for the lifetime of the stage.
      *
      * This is the main game loop entry point. Read sensor values, update sprite positions, and
@@ -240,6 +301,17 @@ public class ScratchStage internal constructor(
     }
 
     /**
+     * Stops all sounds started through [ScratchSound.play], [ScratchSound.playUntilDone], or
+     * [ScratchSound.loop].
+     */
+    public fun stopAllSounds(): Unit {
+        for (channel in activeSoundChannels) {
+            channel.stop()
+        }
+        activeSoundChannels.clear()
+    }
+
+    /**
      * Registers a suspend [block] that is called when the game window is closed.
      *
      * Use this to release resources such as hardware connections.
@@ -248,6 +320,10 @@ public class ScratchStage internal constructor(
      */
     public fun onClose(block: suspend () -> Unit): Unit {
         korgeStage.views.onClose(block)
+    }
+
+    private fun registerSoundChannel(channel: SoundChannel): Unit {
+        activeSoundChannels.add(channel)
     }
 }
 

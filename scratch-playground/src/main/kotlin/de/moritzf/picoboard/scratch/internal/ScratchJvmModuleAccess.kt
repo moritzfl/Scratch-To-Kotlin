@@ -3,9 +3,12 @@ package de.moritzf.picoboard.scratch.internal
 import java.awt.Component
 import java.io.File
 import java.lang.management.ManagementFactory
+import java.lang.StackWalker.Option.RETAIN_CLASS_REFERENCE
 
 private const val MODULE_ACCESS_RELAUNCHED_PROPERTY: String =
     "de.moritzf.picoboard.scratch.moduleAccessRelaunched"
+private const val MODULE_ACCESS_HELPER_CLASS_NAME: String =
+    "de.moritzf.picoboard.scratch.internal.ScratchJvmModuleAccessKt"
 
 private val commonDesktopPackages: List<String> = listOf(
     "java.desktop/java.awt",
@@ -30,7 +33,14 @@ private val blockedRelaunchArgs: List<String> = listOf(
     "debugger-agent.jar",
 )
 
-public fun relaunchScratchMainWithModuleAccessIfNeeded(
+public fun relaunchScratchMainWithModuleAccessIfNeeded(args: Array<String>): Unit {
+    relaunchScratchMainWithModuleAccessIfNeeded(
+        mainClassName = currentMainClassName(),
+        args = args,
+    )
+}
+
+private fun relaunchScratchMainWithModuleAccessIfNeeded(
     mainClassName: String,
     args: Array<String>,
 ): Unit {
@@ -62,6 +72,20 @@ public fun relaunchScratchMainWithModuleAccessIfNeeded(
 
     System.exit(exitCode)
     throw RuntimeException("System.exit returned normally, while it was supposed to halt JVM.")
+}
+
+private fun currentMainClassName(): String {
+    return StackWalker.getInstance(RETAIN_CLASS_REFERENCE).walk { frames ->
+        frames
+            .filter { frame -> frame.className != MODULE_ACCESS_HELPER_CLASS_NAME }
+            .filter { frame -> frame.methodName == "main" }
+            .findFirst()
+            .orElseThrow {
+                IllegalStateException("Unable to determine the current Scratch main class.")
+            }
+            .declaringClass
+            .name
+    }
 }
 
 private fun hasRequiredAwtModuleAccess(): Boolean {
