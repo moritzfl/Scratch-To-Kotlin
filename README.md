@@ -14,7 +14,7 @@ The goal is to let students start with sensor values, then use those values to c
 
 ## Physical Input With The PicoBoard
 
-![PicoBoard](screenshots/picoboard.png)
+![PicoBoard](screenshots/picoboard.jpg)
 
 The PicoBoard is a small sensor board that was commonly used with Scratch 1.x to connect physical inputs to programs. It has built-in sensors and connectors for external inputs, so learners can control programs with light, sound, a slider, a button, and simple circuits.
 
