@@ -20,6 +20,20 @@ The PicoBoard is a small sensor board that was commonly used with Scratch 1.x to
 
 This project brings that same learning tool into a Kotlin environment. Students can keep experimenting with physical interaction, but now they write text-based Kotlin code instead of Scratch blocks.
 
+For the original Scratch 1.x PicoBoard context, see SparkFun's guide:
+
+[Using the SparkFun PicoBoard and Scratch](https://learn.sparkfun.com/tutorials/using-the-sparkfun-picoboard-and-scratch/all)
+
+## PicoBoard Sensor Reference
+
+| Sensor | What It Does | Scratch Blocks | Read From `PicoBoardService` In A Scratch Stage |
+|--------|--------------|----------------|-------------------------------------------------|
+| **Slider** | A slide potentiometer, also called a variable resistor. It changes continuously on a scale from `0` to `100`. | ![Slider sensor blocks](screenshots/slider_sensor_blocks.png) | `service?.slider()` |
+| **Button** | A boolean input with only two states: pressed or not pressed. Use it to trigger actions such as starting a game, jumping, or changing color. | ![Button sensor blocks](screenshots/button_sensor_blocks.png) | `service?.buttonPressed() == true` |
+| **Light** | A light sensor that reports values from `0` to `100`, depending on how much light reaches the board. | ![Light sensor blocks](screenshots/light_sensor_blocks.png) | `service?.light()` |
+| **Sound** | A sound sensor that reports values from `0` to `100` by detecting vibrations in the air. | ![Sound sensor blocks](screenshots/sound_sensor_blocks.png) | `service?.sound()` |
+| **A, B, C, D** | Four external resistance inputs for experiments with alligator clips and external sensors. | ![Resistance sensor blocks](screenshots/resistance_sensor_blocks.png) | `service?.resistanceA()`<br>`service?.resistanceB()`<br>`service?.resistanceC()`<br>`service?.resistanceD()` |
+
 ## Before You Start
 
 This repository is meant for practicing with PicoBoard inputs and small interactive programs. It does not try to teach the absolute Kotlin basics such as simple statements, variables, running code in an IDE, or general IDE setup.
