@@ -14,7 +14,7 @@ The goal is to let students start with sensor values, then use those values to c
 
 ## Disclaimer
 
-I developed this project only for a two-week internship completed by a student at the company where I work. I already had a PicoBoard available, which is why I implemented support for it, but it is outdated hardware and not easy to acquire in large quantities. This project can absolutely be used without a PicoBoard or similar hardware: you can also just use the Scratch-stage-like functions to build a simple game. If you find a good alternative, I am absolutely willing to implement support for it if I am provided with a unit.
+I developed this project only for a two-week internship completed by a student at the company where I work. I already had a PicoBoard available, which is why I implemented support for it, but it is outdated hardware and not easy to acquire in large quantities. This project can absolutely be used without a PicoBoard or similar hardware: you can also just use the Scratch-stage-like functions to build a simple game. If you find a good alternative, I am absolutely willing to implement support for it if I am provided with a unit or compensated for the cost of purchasing one.
 
 This project is shared as-is, but I am willing to work with educators if there are still obstacles that need to be overcome before it can be used effectively in a classroom or learning setting. If you are interested in using this project or adapting it for teaching, please contact me.
 
@@ -144,6 +144,39 @@ The `:scratch-playground` project provides a small Scratch-shaped API on top of 
 - simple `rectangle(...)`, `circle(...)`, `text(...)`, and image sprites
 - sprite properties such as `x`, `y`, `direction`, `size`, `scale`, `rotationStyle`, and `visible`
 - helpers such as `move(...)`, `turnLeft(...)`, `turnRight(...)`, `touching(...)`, `touchingEdge()`, and `ifOnEdgeBounce()`
+
+Common Scratch blocks translate to the Kotlin playground like this:
+
+| Current Scratch block or concept | Kotlin playground equivalent | Notes |
+|----------------------------------|------------------------------|-------|
+| Stage | `scratchStage(width, height, title) { ... }` | Creates the window and centered Scratch-like coordinate system. |
+| Sprite | `rectangle(...)`, `circle(...)`, `image(...)`, or `text(...)` | Shapes and images are the normal visible game objects. |
+| `when green flag clicked` | `suspend fun main() = scratchStage { ... }` | Program startup replaces the green flag event. |
+| `forever` | `forever { ... }` | Runs once per frame. |
+| `if <condition> then` | `if (condition) { ... }` | Normal Kotlin control flow. |
+| `repeat until <condition>` | `while (!condition) { ... }` | Normal Kotlin control flow. |
+| `move (10) steps` | `sprite.move(10)` | Moves in the current `direction`. |
+| `turn right (15) degrees` | `sprite.turnRight(15)` | Clockwise rotation. |
+| `turn left (15) degrees` | `sprite.turnLeft(15)` | Counter-clockwise rotation. |
+| `point in direction (90)` | `sprite.pointInDirection(90)` | Same Scratch direction system: `90` points right. |
+| `point towards [sprite]` | `sprite.pointTowards(otherSprite)` | Points at another playground sprite. |
+| `go to x: (0) y: (0)` | `sprite.goTo(0, 0)` | `(0, 0)` is the stage center. |
+| `change x by (10)` | `sprite.changeXBy(10)` | Positive values move right. |
+| `set x to (10)` | `sprite.x = 10` | Direct property assignment. |
+| `change y by (10)` | `sprite.changeYBy(10)` | Positive values move up. |
+| `set y to (10)` | `sprite.y = 10` | Direct property assignment. |
+| `if on edge, bounce` | `sprite.ifOnEdgeBounce()` | Also clamps the sprite back inside the stage. |
+| `show` / `hide` | `sprite.show()` / `sprite.hide()` | Also available as `sprite.visible = true` or `false`. |
+| `set size to (100)%` | `sprite.size = 100.0` | `100.0` is the original size. |
+| `change size by (10)` | `sprite.size += 10.0` | Uses Kotlin property updates. |
+| `set rotation style [all around]` | `sprite.rotationStyle = ScratchRotationStyle.ALL_AROUND` | Also supports `LEFT_RIGHT` and `DONT_ROTATE`. |
+| `touching [sprite]?` | `sprite.touching(otherSprite)` | Uses shape or image collision detection. |
+| `touching edge?` | `sprite.touchingEdge()` | Checks the stage boundary. |
+| `key [space] pressed?` | `keyPressed(Key.SPACE)` | Uses KorGE keyboard constants such as `Key.LEFT` and `Key.RIGHT`. |
+| Scratch variables | Kotlin variables such as `var score = 0` | Use normal Kotlin values and update displayed text manually. |
+| Scratch variable display | `val label = text(...); label.text = "Score: $score"` | Text labels replace Scratch's automatic variable monitor. |
+| Costume-like image sprite | `val player = image("player.png")` | Put image files in `src/main/resources/`; each image sprite uses one image. |
+| Sounds, broadcasts, clones | No direct helper yet | These were not needed for the internship exercises. |
 
 See the playground guide:
 
