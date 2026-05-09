@@ -135,7 +135,7 @@ The solution first tries PicoBoard auto-selection. If no suitable board is avail
 
 ## Scratch Playground
 
-The `:scratch-playground` project provides a small Scratch-shaped API on top of KorGE:
+The `:scratch-playground` project provides a small Scratch-shaped API on top of [KorGE](https://korge.org/):
 
 - fixed logical stage size with a resizable window
 - centered Scratch-like coordinates
