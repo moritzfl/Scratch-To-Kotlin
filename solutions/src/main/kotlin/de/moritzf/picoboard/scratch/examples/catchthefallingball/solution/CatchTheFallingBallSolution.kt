@@ -39,7 +39,7 @@ private enum class GameState {
 }
 
 @Suppress("LongMethod", "MagicNumber")
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
     relaunchScratchMainWithModuleAccessIfNeeded(args)
 
     runBlocking {
@@ -119,13 +119,13 @@ fun main(args: Array<String>): Unit {
             var gameState = GameState.READY
             var actionButtonWasPressed = false
 
-            fun updateLifeIcons(): Unit {
+            fun updateLifeIcons() {
                 lifeIcons.forEachIndexed { index, icon ->
                     icon.visible = index < lives
                 }
             }
 
-            fun resetBall(): Unit {
+            fun resetBall() {
                 val margin = ball.radius + 24
                 val spawnX = random.nextInt(
                     from = -(width / 2) + margin,
@@ -137,7 +137,7 @@ fun main(args: Array<String>): Unit {
                 ball.pointInDirection(180)
             }
 
-            fun prepareNewGame(printInstructions: Boolean): Unit {
+            fun prepareNewGame(printInstructions: Boolean) {
                 score = 0
                 lives = START_LIVES
                 ballSpeed = BALL_START_SPEED
@@ -153,14 +153,14 @@ fun main(args: Array<String>): Unit {
                 }
             }
 
-            fun startGame(): Unit {
+            fun startGame() {
                 gameState = GameState.PLAYING
                 scoreText.text = "Score: 0"
                 scoreText.show()
                 println("Game started.")
             }
 
-            fun restartGame(): Unit {
+            fun restartGame() {
                 prepareNewGame(printInstructions = false)
                 startGame()
             }
@@ -230,7 +230,7 @@ fun main(args: Array<String>): Unit {
 private fun ScratchStage.updateCatcherPosition(
     catcher: ScratchRectangleSprite,
     service: PicoBoardService?,
-): Unit {
+) {
     val maxCatcherX = width / 2 - catcher.width / 2 - 8
 
     if (service != null) {

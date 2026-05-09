@@ -43,7 +43,7 @@ public suspend fun scratchStage(
     backgroundColor: RGBA = Colors["#F5F1E8"],
     maxInitialWindowDimension: Int = 900,
     init: suspend ScratchStage.() -> Unit,
-): Unit {
+) {
     require(width > 0) {
         "width must be greater than zero"
     }
@@ -68,7 +68,7 @@ public suspend fun scratchStage(
     }
 }
 
-private fun configureMacOsRuntimeProperties(applicationName: String): Unit {
+private fun configureMacOsRuntimeProperties(applicationName: String) {
     if (!System.getProperty("os.name").contains("Mac", ignoreCase = true)) {
         return
     }
@@ -255,7 +255,7 @@ public class ScratchStage internal constructor(
         note: String,
         durationSeconds: Double,
         volume: Double = 0.5,
-    ): Unit {
+    ) {
         validateTone(durationSeconds, volume)
         coroutineScope.launch {
             playToneAndWait(note, durationSeconds, volume)
@@ -272,7 +272,7 @@ public class ScratchStage internal constructor(
         note: String,
         durationSeconds: Double,
         volume: Double = 0.5,
-    ): Unit {
+    ) {
         validateTone(durationSeconds, volume)
         val previousSoundSequence = soundSequence
         soundSequence = coroutineScope.async {
@@ -290,7 +290,7 @@ public class ScratchStage internal constructor(
      *
      * @param block code to execute every frame, with this stage as receiver.
      */
-    public fun forever(block: ScratchStage.() -> Unit): Unit {
+    public fun forever(block: ScratchStage.() -> Unit) {
         korgeStage.addUpdater {
             block()
         }
@@ -316,7 +316,7 @@ public class ScratchStage internal constructor(
      * Stops all sounds started through [ScratchSound.play], [ScratchSound.playUntilDone], or
      * [ScratchSound.loop].
      */
-    public fun stopAllSounds(): Unit {
+    public fun stopAllSounds() {
         soundSequence.cancel()
         soundSequence = CompletableDeferred(Unit)
         for (channel in activeSoundChannels) {
@@ -332,15 +332,15 @@ public class ScratchStage internal constructor(
      *
      * @param block suspend function to call on window close.
      */
-    public fun onClose(block: suspend () -> Unit): Unit {
+    public fun onClose(block: suspend () -> Unit) {
         korgeStage.views.onClose(block)
     }
 
-    private fun registerSoundChannel(channel: SoundChannel): Unit {
+    private fun registerSoundChannel(channel: SoundChannel) {
         activeSoundChannels.add(channel)
     }
 
-    private fun paintStageBackground(backgroundColor: RGBA): Unit {
+    private fun paintStageBackground(backgroundColor: RGBA) {
         korgeStage.solidRect(width.toDouble(), height.toDouble(), backgroundColor)
     }
 
@@ -348,12 +348,12 @@ public class ScratchStage internal constructor(
         note: String,
         durationSeconds: Double,
         volume: Double,
-    ): Unit {
+    ) {
         val sound = ScratchTone.generate(note, durationSeconds, volume).toSound()
         sound.playNoCancel().also(::registerSoundChannel).await()
     }
 
-    private fun validateTone(durationSeconds: Double, volume: Double): Unit {
+    private fun validateTone(durationSeconds: Double, volume: Double) {
         require(durationSeconds > 0.0) {
             "durationSeconds must be greater than zero"
         }

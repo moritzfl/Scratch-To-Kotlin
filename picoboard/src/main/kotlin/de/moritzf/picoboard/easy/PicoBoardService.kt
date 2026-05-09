@@ -111,7 +111,9 @@ public class PicoBoardService internal constructor(
      * @throws IllegalStateException if background polling failed.
      */
     @Throws(PicoBoardException::class)
-    public fun throwIfFailed(): Unit = pollingHandle.throwIfFailed()
+    public fun throwIfFailed() {
+        pollingHandle.throwIfFailed()
+    }
 
     /**
      * Stops background polling and closes the connection to the PicoBoard.

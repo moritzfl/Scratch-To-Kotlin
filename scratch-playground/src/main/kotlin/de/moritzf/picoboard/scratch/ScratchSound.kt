@@ -25,7 +25,7 @@ public class ScratchSound internal constructor(
      *
      * Equivalent to Scratch's "play sound until done" block.
      */
-    public suspend fun playUntilDone(): Unit {
+    public suspend fun playUntilDone() {
         sound.playNoCancel().also(onChannelStarted).await()
     }
 

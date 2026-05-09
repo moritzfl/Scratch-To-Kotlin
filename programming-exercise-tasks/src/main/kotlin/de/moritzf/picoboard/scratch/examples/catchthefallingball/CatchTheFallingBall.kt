@@ -13,7 +13,7 @@ private const val STAGE_HEIGHT: Int = 700
 private const val GAME_LOOP_INTERVAL_MILLIS: Long = 16L
 private const val PICOBOARD_POLL_INTERVAL_MILLIS: Long = GAME_LOOP_INTERVAL_MILLIS / 2
 
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
     relaunchScratchMainWithModuleAccessIfNeeded(args)
 
     runBlocking {

@@ -119,7 +119,7 @@ public class PicoBoardConnection internal constructor(
         }
     }
 
-    private fun ensureOpen(): Unit {
+    private fun ensureOpen() {
         if (closed.get()) {
             throw IllegalStateException("PicoBoard connection '$portIdentifier' is already closed")
         }
@@ -140,16 +140,16 @@ private class DefaultPicoBoardPollingHandle(
     @Volatile
     private var task: ScheduledFuture<*>? = null
 
-    internal fun attach(task: ScheduledFuture<*>): Unit {
+    internal fun attach(task: ScheduledFuture<*>) {
         this.task = task
     }
 
-    internal fun fail(failure: Throwable): Unit {
+    internal fun fail(failure: Throwable) {
         failureRef.compareAndSet(null, failure)
         stop()
     }
 
-    override fun stop(): Unit {
+    override fun stop() {
         if (!running.compareAndSet(true, false)) {
             return
         }
@@ -167,7 +167,7 @@ private class DefaultPicoBoardPollingHandle(
         return failureRef.get()
     }
 
-    override fun throwIfFailed(): Unit {
+    override fun throwIfFailed() {
         val failure = failureRef.get() ?: return
         throw IllegalStateException("PicoBoard polling failed", failure)
     }

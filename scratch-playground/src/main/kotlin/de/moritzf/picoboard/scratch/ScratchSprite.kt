@@ -134,7 +134,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * Equivalent to setting `visible = true`.
      */
-    public fun show(): Unit {
+    public fun show() {
         visible = true
     }
 
@@ -143,7 +143,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * Equivalent to setting `visible = false`.
      */
-    public fun hide(): Unit {
+    public fun hide() {
         visible = false
     }
 
@@ -153,7 +153,7 @@ public sealed class ScratchSprite protected constructor(
      * @param x target horizontal position.
      * @param y target vertical position.
      */
-    public fun goTo(x: Int, y: Int): Unit {
+    public fun goTo(x: Int, y: Int) {
         this.x = x
         this.y = y
     }
@@ -163,7 +163,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param dx number of pixels to move right (negative moves left).
      */
-    public fun changeXBy(dx: Int): Unit {
+    public fun changeXBy(dx: Int) {
         x += dx
     }
 
@@ -172,7 +172,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param dy number of pixels to move up (negative moves down).
      */
-    public fun changeYBy(dy: Int): Unit {
+    public fun changeYBy(dy: Int) {
         y += dy
     }
 
@@ -183,7 +183,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param directionDegrees direction in degrees clockwise from north.
      */
-    public fun pointInDirection(directionDegrees: Int): Unit {
+    public fun pointInDirection(directionDegrees: Int) {
         direction = directionDegrees.toDouble()
     }
 
@@ -194,7 +194,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param other the sprite to point towards.
      */
-    public fun pointTowards(other: ScratchSprite): Unit {
+    public fun pointTowards(other: ScratchSprite) {
         val deltaX = other.x - x
         val deltaY = other.y - y
         if (deltaX == 0 && deltaY == 0) {
@@ -208,7 +208,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param steps number of pixels to move forward (negative moves backward).
      */
-    public fun move(steps: Int): Unit {
+    public fun move(steps: Int) {
         val moved = movePoint(ScratchVector(x.toDouble(), y.toDouble()), steps.toDouble(), direction)
         this.x = moved.x.roundToInt()
         this.y = moved.y.roundToInt()
@@ -219,7 +219,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param degrees angle to rotate right.
      */
-    public fun turnRight(degrees: Int): Unit {
+    public fun turnRight(degrees: Int) {
         direction += degrees
     }
 
@@ -228,7 +228,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * @param degrees angle to rotate left.
      */
-    public fun turnLeft(degrees: Int): Unit {
+    public fun turnLeft(degrees: Int) {
         direction -= degrees
     }
 
@@ -259,7 +259,7 @@ public sealed class ScratchSprite protected constructor(
      *
      * Equivalent to the Scratch "if on edge, bounce" block.
      */
-    public fun ifOnEdgeBounce(): Unit {
+    public fun ifOnEdgeBounce() {
         ensureActive()
         val bounds = currentBounds()
         val edgeCollision = bounds.touchesStage(stage.stageHalfWidth, stage.stageHalfHeight)
@@ -284,7 +284,7 @@ public sealed class ScratchSprite protected constructor(
      * After calling [remove], the sprite can no longer be used in collision checks or moved.
      * Calling [remove] more than once is safe.
      */
-    public fun remove(): Unit {
+    public fun remove() {
         if (removed) {
             return
         }
@@ -296,7 +296,7 @@ public sealed class ScratchSprite protected constructor(
 
     internal abstract fun currentShape(): ScratchShape
 
-    private fun syncView(): Unit {
+    private fun syncView() {
         if (removed) {
             return
         }
@@ -323,7 +323,7 @@ public sealed class ScratchSprite protected constructor(
         }
     }
 
-    private fun ensureActive(): Unit {
+    private fun ensureActive() {
         check(!removed) {
             "Scratch sprite has already been removed"
         }
@@ -511,7 +511,7 @@ public class ScratchTextSprite internal constructor(
      *
      * Equivalent to setting `visible = true`.
      */
-    public fun show(): Unit {
+    public fun show() {
         visible = true
     }
 
@@ -520,7 +520,7 @@ public class ScratchTextSprite internal constructor(
      *
      * Equivalent to setting `visible = false`.
      */
-    public fun hide(): Unit {
+    public fun hide() {
         visible = false
     }
 
@@ -530,12 +530,12 @@ public class ScratchTextSprite internal constructor(
      * @param x target horizontal position.
      * @param y target vertical position.
      */
-    public fun goTo(x: Int, y: Int): Unit {
+    public fun goTo(x: Int, y: Int) {
         this.x = x
         this.y = y
     }
 
-    private fun syncView(): Unit {
+    private fun syncView() {
         view.x = stage.stageCenterX + x
         view.y = stage.stageCenterY - y
     }

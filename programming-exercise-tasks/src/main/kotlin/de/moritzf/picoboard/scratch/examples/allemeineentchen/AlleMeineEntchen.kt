@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 private const val NOTE_DURATION_SECONDS: Double = 0.35
 private const val LONG_NOTE_DURATION_SECONDS: Double = 0.7
 
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
     relaunchScratchMainWithModuleAccessIfNeeded(args)
 
     runBlocking {

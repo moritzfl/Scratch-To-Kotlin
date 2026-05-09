@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
 private const val NOTE_DURATION_SECONDS: Double = 0.35
 private const val LONG_NOTE_DURATION_SECONDS: Double = 0.7
 
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
     relaunchScratchMainWithModuleAccessIfNeeded(args)
 
     runBlocking {
@@ -39,7 +39,7 @@ fun main(args: Array<String>): Unit {
                 show()
             }
 
-            fun playMelody(): Unit {
+            fun playMelody() {
                 playToneUntilDone("C", NOTE_DURATION_SECONDS)
                 playToneUntilDone("D", NOTE_DURATION_SECONDS)
                 playToneUntilDone("E", NOTE_DURATION_SECONDS)

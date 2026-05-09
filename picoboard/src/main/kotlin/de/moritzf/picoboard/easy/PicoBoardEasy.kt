@@ -42,7 +42,7 @@ public object PicoBoardEasy {
         portPath: String? = null,
         options: PicoBoardOptions = PicoBoardOptions(),
         block: PicoBoardProject.() -> Unit,
-    ): Unit {
+    ) {
         openConnection(portPath, options).use { connection ->
             PicoBoardProject(connection).block()
         }
@@ -262,7 +262,7 @@ public class PicoBoardProject internal constructor(
     public fun every(
         intervalMillis: Long = connection.options.pollingInterval.toMillis(),
         action: PicoBoardProject.() -> Unit,
-    ): Unit {
+    ) {
         require(intervalMillis >= 0L) {
             "intervalMillis must be zero or greater"
         }
@@ -293,7 +293,7 @@ public class PicoBoardProject internal constructor(
         times: Int,
         intervalMillis: Long = connection.options.pollingInterval.toMillis(),
         action: PicoBoardProject.() -> Unit,
-    ): Unit {
+    ) {
         require(times >= 0) {
             "times must be zero or greater"
         }
@@ -380,7 +380,7 @@ public class PicoBoardProject internal constructor(
         }
     }
 
-    private fun sleepIfNeeded(intervalMillis: Long): Unit {
+    private fun sleepIfNeeded(intervalMillis: Long) {
         if (intervalMillis > 0L) {
             sleeper(intervalMillis)
         }

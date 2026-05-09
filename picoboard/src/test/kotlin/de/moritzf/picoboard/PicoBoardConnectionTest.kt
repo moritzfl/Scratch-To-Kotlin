@@ -174,5 +174,5 @@ private class FakePacketTransport(
         }
     }
 
-    override fun close(): Unit = Unit
+    override fun close() = Unit
 }

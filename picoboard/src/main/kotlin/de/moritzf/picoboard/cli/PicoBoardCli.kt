@@ -164,7 +164,7 @@ private data class CliOptions(
     }
 }
 
-private fun printUsage(): Unit {
+private fun printUsage() {
     println(
         """
         Usage: ./gradlew run --args="[--port <path>] [--count N] [--interval-ms N] [--timeout-ms N]"
@@ -180,7 +180,7 @@ private fun printUsage(): Unit {
     )
 }
 
-private fun printPorts(): Unit {
+private fun printPorts() {
     val ports = PicoBoard.listPorts()
     if (ports.isEmpty()) {
         println("No serial ports found.")

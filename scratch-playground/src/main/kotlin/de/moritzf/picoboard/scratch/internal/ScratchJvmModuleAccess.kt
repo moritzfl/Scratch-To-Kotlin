@@ -33,7 +33,7 @@ private val blockedRelaunchArgs: List<String> = listOf(
     "debugger-agent.jar",
 )
 
-public fun relaunchScratchMainWithModuleAccessIfNeeded(args: Array<String>): Unit {
+public fun relaunchScratchMainWithModuleAccessIfNeeded(args: Array<String>) {
     relaunchScratchMainWithModuleAccessIfNeeded(
         mainClassName = currentMainClassName(),
         args = args,
@@ -43,7 +43,7 @@ public fun relaunchScratchMainWithModuleAccessIfNeeded(args: Array<String>): Uni
 private fun relaunchScratchMainWithModuleAccessIfNeeded(
     mainClassName: String,
     args: Array<String>,
-): Unit {
+) {
     if (hasRequiredAwtModuleAccess()) {
         return
     }

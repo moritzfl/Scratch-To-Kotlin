@@ -315,5 +315,5 @@ private class FakePacketTransport(
         return responses.size
     }
 
-    override fun close(): Unit = Unit
+    override fun close() = Unit
 }

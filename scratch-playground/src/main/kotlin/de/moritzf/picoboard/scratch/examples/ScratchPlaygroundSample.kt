@@ -5,7 +5,7 @@ import de.moritzf.picoboard.scratch.scratchStage
 import korlibs.event.Key
 import korlibs.image.color.Colors
 
-suspend fun main(): Unit = scratchStage(width = 1000, height = 700, title = "Scratch Playground Sample") {
+suspend fun main() = scratchStage(width = 1000, height = 700, title = "Scratch Playground Sample") {
     val player = rectangle(
         width = 140,
         height = 24,

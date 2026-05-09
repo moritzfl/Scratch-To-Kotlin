@@ -37,7 +37,7 @@ internal class SerialPicoBoardPacketTransport private constructor(
         }
     }
 
-    override fun close(): Unit {
+    override fun close() {
         synchronized(lock) {
             if (closed) {
                 return
@@ -70,7 +70,7 @@ internal class SerialPicoBoardPacketTransport private constructor(
         }
     }
 
-    private fun ensureOpen(): Unit {
+    private fun ensureOpen() {
         if (closed) {
             throw IllegalStateException("PicoBoard transport '$identifier' is already closed")
         }
@@ -99,7 +99,7 @@ internal class SerialPicoBoardPacketTransport private constructor(
         offset: Int,
         length: Int,
         deadlineNanos: Long,
-    ): Unit {
+    ) {
         var cursor = offset
         val end = offset + length
         while (cursor < end) {
