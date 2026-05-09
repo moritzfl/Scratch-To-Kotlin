@@ -72,7 +72,7 @@ The Gradle build is split into four projects:
 - A classic PicoBoard or compatible Scratch sensor board for hardware exercises
 - macOS, Linux, or Windows
 
-Gradle uses Java 21 toolchains. If Java 21 is not installed locally, Gradle can provision it automatically.
+Gradle uses Java 21 toolchains. If Java 21 is not available locally, Gradle can provision it automatically.
 
 ## Build
 
@@ -145,7 +145,11 @@ See the playground guide:
 
 [scratch-playground/README.md](scratch-playground/README.md)
 
-## PicoBoard Library
+## Technical Details
+
+Everything up to this point is the most relevant part for learners and educators. The rest of this README gets more technical and describes how the PicoBoard support is implemented. The exercises and playground are designed to just work without requiring hardware setup knowledge, serial communication details, or an understanding of the PicoBoard protocol.
+
+### PicoBoard Library
 
 The `:picoboard` project contains the reusable Kotlin/JVM library. It:
 
@@ -163,9 +167,9 @@ The implementation targets the classic Scratch 1.x PicoBoard protocol:
 
 The parser and scaling logic follow the MIT Scratch Board technical guide, and the serial setup matches the SparkFun PicoBoard getting-started documentation.
 
-## CLI Tools
+### CLI Tools
 
-The PicoBoard CLI is useful for setup and debugging outside the exercises.
+The PicoBoard CLI is useful for checking ports and debugging outside the exercises.
 
 List available serial ports:
 
@@ -191,14 +195,7 @@ Read 10 frames and exit:
 ./gradlew :picoboard:run --args="--port /dev/cu.usbserial-A5061E1Q --count 10"
 ```
 
-Install the CLI with startup scripts:
-
-```bash
-./gradlew :picoboard:installDist
-picoboard/build/install/picoboard/bin/picoboard --port /dev/cu.usbserial-A5061E1Q --count 10
-```
-
-## Auto-Selection
+### Auto-Selection
 
 The library can auto-select a suitable serial device:
 
@@ -208,7 +205,7 @@ The library can auto-select a suitable serial device:
 
 If you want full control, keep using `PicoBoard.open(portPath)` or `PicoBoard.open(port)`.
 
-## Hardware Notes
+### Hardware Notes
 
 - On older systems, you may need FTDI VCP drivers installed before the PicoBoard appears as a serial device.
 - On macOS, the relevant port is typically `/dev/tty.usbserial-*` or `/dev/cu.usbserial-*`.
@@ -216,7 +213,7 @@ If you want full control, keep using `PicoBoard.open(portPath)` or `PicoBoard.op
 - On Linux, prefer the stable symlink under `/dev/serial/by-id/` when possible, for example `/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5061E1Q-if00-port0`.
 - On Windows, it appears as `COMx`.
 
-## IntelliJ On Linux
+### IntelliJ On Linux
 
 On this project, a normal IntelliJ installation on Linux works with the PicoBoard.
 Testing with IntelliJ's bundled JetBrains Runtime successfully opened `/dev/ttyUSB0` and read a valid PicoBoard packet.
