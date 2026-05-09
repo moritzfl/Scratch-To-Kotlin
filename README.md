@@ -12,6 +12,10 @@ It combines three layers:
 
 The goal is to let students start with sensor values, then use those values to control an interactive game, without first having to understand serial communication or graphics setup.
 
+## Disclaimer
+
+I developed this project only for a two-week internship completed by a student at the company where I work. It is shared as-is, but I am willing to work with educators if there are still obstacles that need to be overcome before it can be used effectively in a classroom or learning setting. If you are interested in using this project or adapting it for teaching, please contact me.
+
 ## Physical Input With The PicoBoard
 
 ![PicoBoard](screenshots/picoboard.jpg)
