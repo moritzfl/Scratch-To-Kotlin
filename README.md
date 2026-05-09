@@ -56,11 +56,10 @@ For German-speaking learners, this video is a good starting point. It teaches th
 
 1. Read simple PicoBoard sensor values.
 2. Explore built-in and external PicoBoard inputs.
-3. Use keyboard fallback controls when no board is connected.
-4. Play a simple song with generated tones.
-5. Build a small Scratch-style game with sprites, movement, collisions, and score keeping.
-6. Compare the starter exercises with complete solutions.
-7. Get creative and start building your own game
+3. Play a simple song with generated tones.
+4. Build a small Scratch-style game with sprites, movement, collisions, and score keeping.
+5. Compare the starter exercises with complete solutions.
+6. Get creative and start building your own game
 
 ## Projects
 
@@ -101,7 +100,31 @@ Run it with:
 
 This exercise introduces the easy PicoBoard API and asks students to inspect the built-in and external sensor values.
 
-## Exercise 2: Catch The Falling Ball
+## Exercise 2: Alle meine Entchen / All My Ducklings
+
+Starter file:
+
+[AlleMeineEntchen.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/AlleMeineEntchen.kt)
+
+Run it with:
+
+```bash
+./gradlew runAlleMeineEntchen
+```
+
+The task is to complete the melody of the German children's song "Alle meine Entchen", usually translated as "All My Ducklings", with generated tones. It introduces `playToneUntilDone(...)` without requiring any sound files.
+
+Students practice writing a simple sequence of statements, where each statement plays one note:
+
+```kotlin
+playToneUntilDone("C", NOTE_DURATION_SECONDS)
+playToneUntilDone("D", NOTE_DURATION_SECONDS)
+playToneUntilDone("E", NOTE_DURATION_SECONDS)
+```
+
+This exercise is intentionally simpler than the game exercise. It focuses on calling functions, using constants for repeated values, and understanding that a program can do several things one after another.
+
+## Exercise 3: Catch The Falling Ball
 
 ![Catch The Falling Ball screenshot](screenshots/catchthefallingball.png)
 
@@ -124,23 +147,19 @@ The task is to implement the game logic:
 
 The exercise uses PicoBoard controls when a board is available and keyboard controls otherwise.
 
-## Exercise 3: Alle meine Entchen
+## Solutions
 
-Starter file:
+Alle meine Entchen / All My Ducklings solution:
 
-[AlleMeineEntchen.kt](programming-exercise-tasks/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/AlleMeineEntchen.kt)
+[AlleMeineEntchenSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/solution/AlleMeineEntchenSolution.kt)
 
 Run it with:
 
 ```bash
-./gradlew runAlleMeineEntchen
+./gradlew runAlleMeineEntchenSolution
 ```
 
-The task is to complete the melody of the German children's song "Alle meine Entchen", usually translated as "All My Ducklings", with generated tones. It introduces `playToneUntilDone(...)` without requiring any sound files.
-
-## Solutions
-
-Full solution:
+Catch The Falling Ball solution:
 
 [CatchTheFallingBallSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/catchthefallingball/solution/CatchTheFallingBallSolution.kt)
 
@@ -151,16 +170,6 @@ Run it with:
 ```
 
 The solution first tries PicoBoard auto-selection. If no suitable board is available, it falls back to keyboard controls.
-
-Alle meine Entchen solution:
-
-[AlleMeineEntchenSolution.kt](solutions/src/main/kotlin/de/moritzf/picoboard/scratch/examples/allemeineentchen/solution/AlleMeineEntchenSolution.kt)
-
-Run it with:
-
-```bash
-./gradlew runAlleMeineEntchenSolution
-```
 
 ## Scratch Playground
 
