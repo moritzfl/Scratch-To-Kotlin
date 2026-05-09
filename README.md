@@ -14,7 +14,7 @@ The goal is to let students start with sensor values, then use those values to c
 
 ## Disclaimer
 
-I developed this project only for a two-week internship completed by a student at the company where I work. I already had a PicoBoard available, which is why I implemented support for it, but it is outdated hardware and not easy to acquire in large quantities. If you find a good alternative, I am absolutely willing to implement support for it if I am provided with a unit.
+I developed this project only for a two-week internship completed by a student at the company where I work. I already had a PicoBoard available, which is why I implemented support for it, but it is outdated hardware and not easy to acquire in large quantities. This project can absolutely be used without a PicoBoard or similar hardware: you can also just use the Scratch-stage-like functions to build a simple game. If you find a good alternative, I am absolutely willing to implement support for it if I am provided with a unit.
 
 This project is shared as-is, but I am willing to work with educators if there are still obstacles that need to be overcome before it can be used effectively in a classroom or learning setting. If you are interested in using this project or adapting it for teaching, please contact me.
 
