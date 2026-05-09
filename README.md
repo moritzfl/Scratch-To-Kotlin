@@ -207,7 +207,10 @@ Common Scratch blocks translate to the Kotlin playground like this:
 | `play sound [pop] until done` | `pop.playUntilDone()` | Suspends until playback finishes. |
 | `play note (60) for (0.5) beats` | `playToneUntilDone("C", 0.5)` | Generates a tone without a sound file; supports notes such as `C`, `C#`, `Cb`, `F`, `G`, `A`, `H`, and `C5`. |
 | `stop all sounds` | `stopAllSounds()` | Stops sounds started through the playground sound helpers. |
-| Broadcasts, clones | No direct helper yet | These were not needed for the internship exercises. |
+| Clones | Use Kotlin functions, constructors, lists, or loops | Intentionally not mirrored as a Scratch feature. Kotlin has better tools for creating similar or identical things multiple times. |
+| Broadcasts and messages | Use functions, objects, and normal OOP structure | Intentionally not mirrored as a Scratch feature. Kotlin can express communication directly with first-class functions and objects. |
+
+Clones and broadcasts are intentionally not implemented as direct Scratch-style helpers. In the author's view, those Scratch features are mostly workarounds for the fact that Scratch does not expose the tools of a full programming language. Once learners move to Kotlin, functions, constructors, objects, lists, and the usual object-oriented programming strategies are clearer and more powerful ways to solve the same problems.
 
 See the playground guide:
 
