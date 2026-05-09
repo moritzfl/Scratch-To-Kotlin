@@ -212,6 +212,8 @@ Common Scratch blocks translate to the Kotlin playground like this:
 
 Clones and broadcasts are intentionally not implemented as direct Scratch-style helpers. In the author's view, those Scratch features are mostly workarounds for the fact that Scratch does not expose the tools of a full programming language. Once learners move to Kotlin, functions, constructors, objects, lists, and the usual object-oriented programming strategies are clearer and more powerful ways to solve the same problems.
 
+The playground guide explains the main control structures used by the examples, including `runBlocking`, `scratchStage { ... }`, setup code, `forever { ... }`, and normal Kotlin `if`, `when`, and `while` blocks.
+
 See the playground guide:
 
 [scratch-playground/README.md](scratch-playground/README.md)

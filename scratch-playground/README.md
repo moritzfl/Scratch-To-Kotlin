@@ -26,6 +26,47 @@ It is meant as the next step after the beginner PicoBoard examples:
 - frame loops:
   `forever { ... }`
 
+## Control Structure
+
+Scratch hides most program structure behind event blocks such as `when green flag clicked` and `forever`. In Kotlin, the same ideas are visible in the source code.
+
+| Kotlin structure | What it means | Scratch idea |
+|------------------|---------------|--------------|
+| `fun main(args: Array<String>)` | The normal entry point when the program is started by Gradle. | Similar to pressing the green flag. |
+| `runBlocking { ... }` | Starts a coroutine-aware block from a normal `main` function. It is only needed because loading images, loading sounds, and playing tones can suspend. | Scratch hides this runtime detail. |
+| `suspend fun main() = scratchStage { ... }` | Shorter entry point for examples that do not need the relaunch helper. | Also similar to pressing the green flag. |
+| `scratchStage(width, height, title) { ... }` | Opens the game window and runs the setup code inside the braces once. | Creates the stage and prepares sprites before the game starts. |
+| `val player = rectangle(...) { ... }` | Creates one object and immediately configures it. | Creating a sprite and setting its first position, direction, or visibility. |
+| `forever { ... }` | Registers code that runs once per rendered frame while the window is open. | Scratch's `forever` block. |
+| `if (condition) { ... }` | Runs code only when a condition is true. | Scratch's `if then` block. |
+| `when (value) { ... }` | Chooses between several named cases. | Similar to several `if` blocks, but cleaner for game states. |
+| `while (condition) { ... }` | Repeats while a condition stays true. | Similar to Scratch's repeat blocks, but use it carefully in games. |
+| `return@forever` | Stops the current frame update early and continues again next frame. | Similar to skipping the rest of one `forever` iteration. |
+
+Code inside `scratchStage { ... }` but outside `forever { ... }` is setup code. It creates sprites, text labels, sounds, variables, and helper functions once.
+
+Code inside `forever { ... }` is game-loop code. It should read input, move sprites, update text, check collisions, and react to game state. Do not put long blocking loops inside `forever`, because that would freeze the window instead of letting the next frame run.
+
+In this repository, most exercise files use this shape:
+
+```kotlin
+fun main(args: Array<String>) {
+    relaunchScratchMainWithModuleAccessIfNeeded(args)
+
+    runBlocking {
+        scratchStage(width = 800, height = 400, title = "My Stage") {
+            val player = rectangle(width = 80, height = 40)
+
+            forever {
+                player.move(4)
+            }
+        }
+    }
+}
+```
+
+The important learner-facing parts are `scratchStage { ... }` for setup and `forever { ... }` for repeated game behavior. `relaunchScratchMainWithModuleAccessIfNeeded(args)` and `runBlocking { ... }` are technical wrapper code that makes desktop graphics and suspend functions work reliably from Gradle and the IDE.
+
 ## Small Example
 
 ```kotlin
