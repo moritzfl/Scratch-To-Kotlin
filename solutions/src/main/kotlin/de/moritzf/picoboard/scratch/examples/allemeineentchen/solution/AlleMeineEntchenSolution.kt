@@ -2,6 +2,7 @@ package de.moritzf.picoboard.scratch.examples.allemeineentchen.solution
 
 import de.moritzf.picoboard.scratch.internal.relaunchScratchMainWithModuleAccessIfNeeded
 import de.moritzf.picoboard.scratch.scratchStage
+import korlibs.event.Key
 import korlibs.image.color.Colors
 import kotlinx.coroutines.runBlocking
 
@@ -30,7 +31,7 @@ fun main(args: Array<String>): Unit {
             }
 
             text(
-                text = "All My Ducklings",
+                text = "Press Space to play All My Ducklings",
                 fontSize = 24,
                 color = Colors["#33658A"],
             ) {
@@ -38,19 +39,44 @@ fun main(args: Array<String>): Unit {
                 show()
             }
 
-            val melody = listOf(
-                "C", "D", "E", "F", "G", "G",
-                "A", "A", "A", "A", "G",
-                "A", "A", "A", "A", "G",
-                "F", "F", "F", "F", "E", "E",
-                "D", "D", "D", "D", "C",
-            )
-            val longNoteIndexes = listOf(5, 10, 15, 21, 26)
+            fun playMelody(): Unit {
+                playToneUntilDone("C", NOTE_DURATION_SECONDS)
+                playToneUntilDone("D", NOTE_DURATION_SECONDS)
+                playToneUntilDone("E", NOTE_DURATION_SECONDS)
+                playToneUntilDone("F", NOTE_DURATION_SECONDS)
+                playToneUntilDone("G", NOTE_DURATION_SECONDS)
+                playToneUntilDone("G", LONG_NOTE_DURATION_SECONDS)
 
-            melody.forEachIndexed { index, note ->
-                val isLastNoteOfLine = index in longNoteIndexes
-                val duration = if (isLastNoteOfLine) LONG_NOTE_DURATION_SECONDS else NOTE_DURATION_SECONDS
-                playToneUntilDone(note, duration)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("G", LONG_NOTE_DURATION_SECONDS)
+
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("A", NOTE_DURATION_SECONDS)
+                playToneUntilDone("G", LONG_NOTE_DURATION_SECONDS)
+
+                playToneUntilDone("F", NOTE_DURATION_SECONDS)
+                playToneUntilDone("F", NOTE_DURATION_SECONDS)
+                playToneUntilDone("F", NOTE_DURATION_SECONDS)
+                playToneUntilDone("F", NOTE_DURATION_SECONDS)
+                playToneUntilDone("E", NOTE_DURATION_SECONDS)
+                playToneUntilDone("E", LONG_NOTE_DURATION_SECONDS)
+
+                playToneUntilDone("D", NOTE_DURATION_SECONDS)
+                playToneUntilDone("D", NOTE_DURATION_SECONDS)
+                playToneUntilDone("D", NOTE_DURATION_SECONDS)
+                playToneUntilDone("D", NOTE_DURATION_SECONDS)
+                playToneUntilDone("C", LONG_NOTE_DURATION_SECONDS)
+            }
+
+            forever {
+                if (keyJustPressed(Key.SPACE)) {
+                    playMelody()
+                }
             }
         }
     }

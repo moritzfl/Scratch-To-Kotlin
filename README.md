@@ -178,7 +178,7 @@ Common Scratch blocks translate to the Kotlin playground like this:
 |----------------------------------|------------------------------|-------|
 | Stage | `scratchStage(width, height, title) { ... }` | Creates the window and centered Scratch-like coordinate system. |
 | Sprite | `rectangle(...)`, `circle(...)`, `image(...)`, or `text(...)` | Shapes and images are the normal visible game objects. |
-| `when green flag clicked` | `suspend fun main() = scratchStage { ... }` | Program startup replaces the green flag event. |
+| `when green flag clicked` | `fun main(...) { ... }` | Program startup replaces the green flag event. |
 | `forever` | `forever { ... }` | Runs once per frame. |
 | `if <condition> then` | `if (condition) { ... }` | Normal Kotlin control flow. |
 | `repeat until <condition>` | `while (!condition) { ... }` | Normal Kotlin control flow. |

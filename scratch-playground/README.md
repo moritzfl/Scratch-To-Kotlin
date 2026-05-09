@@ -33,8 +33,7 @@ Scratch hides most program structure behind event blocks such as `when green fla
 | Kotlin structure | What it means | Scratch idea |
 |------------------|---------------|--------------|
 | `fun main(args: Array<String>)` | The normal entry point when the program is started by Gradle. | Similar to pressing the green flag. |
-| `runBlocking { ... }` | Starts a coroutine-aware block from a normal `main` function. It is only needed because loading images, loading sounds, and playing tones can suspend. | Scratch hides this runtime detail. |
-| `suspend fun main() = scratchStage { ... }` | Shorter entry point for examples that do not need the relaunch helper. | Also similar to pressing the green flag. |
+| `runBlocking { ... }` | Technical wrapper used by the project. Students normally leave it as it is. | Scratch hides this runtime detail. |
 | `scratchStage(width, height, title) { ... }` | Opens the game window and runs the setup code inside the braces once. | Creates the stage and prepares sprites before the game starts. |
 | `val player = rectangle(...) { ... }` | Creates one object and immediately configures it. | Creating a sprite and setting its first position, direction, or visibility. |
 | `forever { ... }` | Registers code that runs once per rendered frame while the window is open. | Scratch's `forever` block. |
@@ -65,50 +64,58 @@ fun main(args: Array<String>) {
 }
 ```
 
-The important learner-facing parts are `scratchStage { ... }` for setup and `forever { ... }` for repeated game behavior. `relaunchScratchMainWithModuleAccessIfNeeded(args)` and `runBlocking { ... }` are technical wrapper code that makes desktop graphics and suspend functions work reliably from Gradle and the IDE.
+The important learner-facing parts are `scratchStage { ... }` for setup and `forever { ... }` for repeated game behavior. `relaunchScratchMainWithModuleAccessIfNeeded(args)` and `runBlocking { ... }` are technical wrapper code that makes desktop graphics work reliably from Gradle and the IDE. Students normally do not need to change them.
 
 ## Small Example
 
 ```kotlin
 import de.moritzf.picoboard.scratch.ScratchRotationStyle
+import de.moritzf.picoboard.scratch.internal.relaunchScratchMainWithModuleAccessIfNeeded
 import de.moritzf.picoboard.scratch.scratchStage
 import korlibs.event.Key
 import korlibs.image.color.Colors
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() = scratchStage(width = 1000, height = 700, title = "My First Stage") {
-    val player = rectangle(
-        width = 140.0,
-        height = 24.0,
-        color = Colors["#E2C044"],
-    ) {
-        goTo(0.0, -250.0)
-        rotationStyle = ScratchRotationStyle.DONT_ROTATE
-    }
+fun main(args: Array<String>) {
+    relaunchScratchMainWithModuleAccessIfNeeded(args)
 
-    val ball = circle(
-        radius = 16.0,
-        color = Colors["#FF7F50"],
-    ) {
-        goTo(0.0, 40.0)
-        pointInDirection(35.0)
-    }
+    runBlocking {
+        scratchStage(width = 1000, height = 700, title = "My First Stage") {
+            val player = rectangle(
+                width = 140.0,
+                height = 24.0,
+                color = Colors["#E2C044"],
+            ) {
+                goTo(0.0, -250.0)
+                rotationStyle = ScratchRotationStyle.DONT_ROTATE
+            }
 
-    val hitSound = sound("hit.wav")
+            val ball = circle(
+                radius = 16.0,
+                color = Colors["#FF7F50"],
+            ) {
+                goTo(0.0, 40.0)
+                pointInDirection(35.0)
+            }
 
-    forever {
-        if (keyPressed(Key.LEFT)) {
-            player.changeXBy(-6.0)
-        }
-        if (keyPressed(Key.RIGHT)) {
-            player.changeXBy(6.0)
-        }
+            val hitSound = sound("hit.wav")
 
-        ball.move(6.0)
-        ball.ifOnEdgeBounce()
+            forever {
+                if (keyPressed(Key.LEFT)) {
+                    player.changeXBy(-6.0)
+                }
+                if (keyPressed(Key.RIGHT)) {
+                    player.changeXBy(6.0)
+                }
 
-        if (ball.touching(player)) {
-            hitSound.play()
-            println("Hit")
+                ball.move(6.0)
+                ball.ifOnEdgeBounce()
+
+                if (ball.touching(player)) {
+                    hitSound.play()
+                    println("Hit")
+                }
+            }
         }
     }
 }

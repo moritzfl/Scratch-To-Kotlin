@@ -20,8 +20,14 @@ import korlibs.korge.view.solidRect
 import korlibs.korge.view.text
 import korlibs.math.geom.Size
 import korlibs.render.GameWindowCreationConfig
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.roundToInt
+import kotlin.coroutines.coroutineContext
 
 /**
  * Opens a resizable game window and runs [init] to set up the stage.
@@ -68,7 +74,7 @@ public suspend fun scratchStage(
         backgroundColor = backgroundColor,
         windowCreationConfig = GameWindowCreationConfig(resizable = true),
     ).start {
-        ScratchStage(this, width, height).init()
+        ScratchStage(this, CoroutineScope(coroutineContext), width, height).init()
     }
 }
 
@@ -93,12 +99,14 @@ private fun configureMacOsRuntimeProperties(applicationName: String): Unit {
  */
 public class ScratchStage internal constructor(
     private val korgeStage: Stage,
+    private val coroutineScope: CoroutineScope,
     /** Logical width of the stage in pixels. */
     public val width: Int,
     /** Logical height of the stage in pixels. */
     public val height: Int,
 ) {
     private val activeSoundChannels: MutableSet<SoundChannel> = mutableSetOf()
+    private var soundSequence: Deferred<Unit> = CompletableDeferred(Unit)
 
     internal val stageHalfWidth: Double = width / 2.0
     internal val stageHalfHeight: Double = height / 2.0
@@ -247,33 +255,35 @@ public class ScratchStage internal constructor(
      * @param note note name, e.g. `C`, `C#`, `Cb`, `H`, or `C5`.
      * @param durationSeconds playback duration in seconds.
      * @param volume playback volume from `0.0` to `1.0`.
-     * @return the started sound channel.
      */
-    public suspend fun playTone(
-        note: String,
-        durationSeconds: Double,
-        volume: Double = 0.5,
-    ): SoundChannel {
-        require(durationSeconds > 0.0) {
-            "durationSeconds must be greater than zero"
-        }
-        require(volume in 0.0..1.0) {
-            "volume must be between 0.0 and 1.0"
-        }
-
-        val sound = ScratchTone.generate(note, durationSeconds, volume).toSound()
-        return sound.playNoCancel().also(::registerSoundChannel)
-    }
-
-    /**
-     * Generates and plays a tone, then suspends until the tone has finished.
-     */
-    public suspend fun playToneUntilDone(
+    public fun playTone(
         note: String,
         durationSeconds: Double,
         volume: Double = 0.5,
     ): Unit {
-        playTone(note, durationSeconds, volume).await()
+        validateTone(durationSeconds, volume)
+        coroutineScope.launch {
+            playToneAndWait(note, durationSeconds, volume)
+        }
+    }
+
+    /**
+     * Queues a generated tone after previously queued tones.
+     *
+     * This function intentionally is not `suspend`, so beginner exercises can write a melody as
+     * a simple sequence of statements.
+     */
+    public fun playToneUntilDone(
+        note: String,
+        durationSeconds: Double,
+        volume: Double = 0.5,
+    ): Unit {
+        validateTone(durationSeconds, volume)
+        val previousSoundSequence = soundSequence
+        soundSequence = coroutineScope.async {
+            previousSoundSequence.await()
+            playToneAndWait(note, durationSeconds, volume)
+        }
     }
 
     /**
@@ -301,10 +311,19 @@ public class ScratchStage internal constructor(
     }
 
     /**
+     * Returns `true` only on the frame where [key] changes from not pressed to pressed.
+     */
+    public fun keyJustPressed(key: Key): Boolean {
+        return korgeStage.views.input.keys.justPressed(key)
+    }
+
+    /**
      * Stops all sounds started through [ScratchSound.play], [ScratchSound.playUntilDone], or
      * [ScratchSound.loop].
      */
     public fun stopAllSounds(): Unit {
+        soundSequence.cancel()
+        soundSequence = CompletableDeferred(Unit)
         for (channel in activeSoundChannels) {
             channel.stop()
         }
@@ -324,6 +343,24 @@ public class ScratchStage internal constructor(
 
     private fun registerSoundChannel(channel: SoundChannel): Unit {
         activeSoundChannels.add(channel)
+    }
+
+    private suspend fun playToneAndWait(
+        note: String,
+        durationSeconds: Double,
+        volume: Double,
+    ): Unit {
+        val sound = ScratchTone.generate(note, durationSeconds, volume).toSound()
+        sound.playNoCancel().also(::registerSoundChannel).await()
+    }
+
+    private fun validateTone(durationSeconds: Double, volume: Double): Unit {
+        require(durationSeconds > 0.0) {
+            "durationSeconds must be greater than zero"
+        }
+        require(volume in 0.0..1.0) {
+            "volume must be between 0.0 and 1.0"
+        }
     }
 }
 
