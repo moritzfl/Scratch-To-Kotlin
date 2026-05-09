@@ -2,6 +2,8 @@
 
 This repository is an educational Kotlin/JVM workspace for learners who have started programming with Scratch and are ready to take the next step toward text-based programming.
 
+If you do not know Scratch yet, start there first: [Scratch](https://scratch.mit.edu/) is a great first tool for getting into programming because it lets learners build interactive stories, animations, and games with visual blocks. The Scratch website also provides many learning resources, tutorials, and example projects that help beginners understand programming concepts before moving on to text-based code.
+
 It keeps some familiar Scratch ideas, such as sprites, a stage, coordinates, collisions, and sensor input, but expresses them in Kotlin code. In that sense, it is intended as a migration path from block-based programming to "real" programming with source files, functions, types, build tasks, and an IDE.
 
 It combines three layers:
@@ -175,7 +177,7 @@ Common Scratch blocks translate to the Kotlin playground like this:
 | `key [space] pressed?` | `keyPressed(Key.SPACE)` | Uses KorGE keyboard constants such as `Key.LEFT` and `Key.RIGHT`. |
 | Scratch variables | Kotlin variables such as `var score = 0` | Use normal Kotlin values and update displayed text manually. |
 | Scratch variable display | `val label = text(...); label.text = "Score: $score"` | Text labels replace Scratch's automatic variable monitor. |
-| Costume-like image sprite | `val player = image("player.png")` | Put image files in `src/main/resources/`; each image sprite uses one image. |
+| Costume-like image sprite | `val player = image("player.png")` | Put PNG files in `src/main/resources/`; use transparency for custom object shapes instead of rectangular images. |
 | Sounds, broadcasts, clones | No direct helper yet | These were not needed for the internship exercises. |
 
 See the playground guide:
